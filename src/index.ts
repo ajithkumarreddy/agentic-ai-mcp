@@ -17,7 +17,7 @@ const model = new ChatGoogleGenerativeAI({
   maxRetries: 3,
 });
 
-const createLLMAgent = (
+export const createLLMAgent = (
   tools: StructuredTool[] = [],
   responseFormat?: ResponseFormat | any,
   options: AgentOptions = {},
@@ -30,6 +30,7 @@ const createLLMAgent = (
   });
 };
 
-const response = await model.invoke("Explain mcp in simple terms");
-
-console.log(response.content);
+export const runAgentDemo = async () => {
+  const response = await model.invoke("Explain mcp in simple terms");
+  console.log(response.content);
+};

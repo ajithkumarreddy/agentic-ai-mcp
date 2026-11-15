@@ -9,4 +9,8 @@ const server = new McpServer({
 
 registerTools(server);
 
-serveStdio(() => server);
+serveStdio(() => server, {
+  onerror: (error) => console.error("Incidents Management MCP Server error:", error),
+});
+
+console.error("Incidents Management MCP Server running on stdio");

@@ -2,9 +2,12 @@
   "name": "agentic-ai-mcp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "start:mcpServer": "tsx ./src/mcp-server/server.ts",
+    "start:mcpClient": "tsx ./src/mcp-client/test.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
