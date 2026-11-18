@@ -1,5 +1,7 @@
-import { createLLMAgent } from "../index.js";
-import { closeMcpConnections, getMcpTools } from "./client.js";
+
+import { createLLMAgent } from "../../index.js";
+import { getMcpTools, closeMcpConnections } from "./client.js";
+
 
 async function main() {
   try {

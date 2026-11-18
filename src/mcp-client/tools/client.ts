@@ -1,5 +1,14 @@
 import { MCPAdapter } from "@langchain/mcp-adapters";
-import { mcpServers } from "./servers.js";
+
+// servers
+const mcpServers = {
+  incidents: {
+    mode: "legacy",
+    transport: "stdio",
+    command: "npx",
+    args: ["tsx", "src/mcp-server/server.ts"],
+  },
+};
 
 export const mcpAdapter = new MCPAdapter({
   servers: mcpServers,
