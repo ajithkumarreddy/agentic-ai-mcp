@@ -3,10 +3,8 @@ import { MCPAdapter } from "@langchain/mcp-adapters";
 // servers
 const mcpServers = {
   incidents: {
-    mode: "legacy",
-    transport: "stdio",
     command: "npx",
-    args: ["tsx", "src/mcp-server/server.ts"],
+    args: ["tsx", "src/mcp-server/server.stdio.ts"],
   },
 };
 
