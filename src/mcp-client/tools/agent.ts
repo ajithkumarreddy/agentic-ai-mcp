@@ -2,7 +2,6 @@
 import { createLLMAgent } from "../../index.js";
 import { getMcpTools, closeMcpConnections } from "./client.js";
 
-
 async function main() {
   try {
     // MCP tools

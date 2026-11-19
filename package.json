@@ -6,9 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/index.js",
+    "start:model": "tsx src/index.ts",
     "start:mcpServer": "tsx ./src/mcp-server/server.ts",
-    "start:mcpToolsClient": "tsx ./src/mcp-client/tools/agent.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:mcpToolsClient": "tsx ./src/mcp-client/tools/agent.ts"
   },
   "repository": {
     "type": "git",

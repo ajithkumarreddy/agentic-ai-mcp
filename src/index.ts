@@ -12,7 +12,7 @@ type AgentOptions = Omit<
 >;
 
 const model = new ChatGoogleGenerativeAI({
-  model: "gemini-3.5-flash",
+  model: "gemini-3.5-flash-lite",
   temperature: 0,
   maxRetries: 3,
 });

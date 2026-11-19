@@ -1,4 +1,4 @@
-import { ResourceTemplate } from "@modelcontextprotocol/server";
+import { ResourceTemplate, type Variables } from "@modelcontextprotocol/server";
 import incidents from "../mock-resources/store.js";
 
 const incidentDetails = {
@@ -7,10 +7,17 @@ const incidentDetails = {
     list: undefined,
   }),
   config: {
-    description: "Get incident details using incident ID",
+    title: "Incident Details",
+    description: "Get incident details for an incident ID",
     mimeType: "application/json",
   },
-  handler: async (uri: URL, { incidentId }: { incidentId: string }) => {
+  handler: async (uri: URL, variables: Variables) => {
+    const incidentId = variables.incidentId;
+
+    if (typeof incidentId !== "string") {
+      throw new Error("Invalid incident ID");
+    }
+
     const incident = incidents.get(incidentId);
 
     if (!incident) {
