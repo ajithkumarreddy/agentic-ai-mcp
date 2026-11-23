@@ -5,11 +5,11 @@ const getIncidentTool = {
   name: "get_incident",
 
   config: {
+    title: "Get Incident Tool",
     description: "Get incident details by Incident ID",
-
-    inputSchema: {
+    inputSchema: z.object({
       incidentId: z.string(),
-    },
+    }),
   },
 
   handler: async ({ incidentId }: { incidentId: string }) => {
