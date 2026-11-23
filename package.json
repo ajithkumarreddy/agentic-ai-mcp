@@ -9,7 +9,8 @@
     "start:model": "tsx src/index.ts",
     "start:mcpServer": "tsx ./src/mcp-server/server.ts",
     "start:mcpToolsClient": "tsx ./src/mcp-client/tools/agent.ts",
-    "start:mcpResourcesClient": "tsx ./src/mcp-client/resources/agent.ts"
+    "start:mcpResourcesClient": "tsx ./src/mcp-client/resources/agent.ts",
+    "start:mcpStructuredOutputClient": "tsx ./src/mcp-client/structured-output/agent.ts"
   },
   "repository": {
     "type": "git",
