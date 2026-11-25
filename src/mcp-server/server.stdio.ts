@@ -1,7 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/server";
-import registerTools from "./tools/index.js";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import registerTools from "./tools/index.js";
 import registerResources from "./resources/index.js";
+import registerElicitationTools from "./elicitation/index.js";
 
 // mcp server
 const server = new McpServer({
@@ -14,6 +15,9 @@ registerTools(server);
 
 // register resources
 registerResources(server);
+
+// register elicitation tools
+registerElicitationTools(server);
 
 // communication protocol
 serveStdio(() => server, {
