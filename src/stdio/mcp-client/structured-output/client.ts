@@ -4,7 +4,7 @@ import { MCPAdapter } from "@langchain/mcp-adapters";
 const mcpServers = {
   incidents: {
     command: "npx",
-    args: ["tsx", "src/mcp-server/server.stdio.ts"],
+    args: ["tsx", "src/stdio/mcp-server/server.stdio.ts"],
   },
 };
 

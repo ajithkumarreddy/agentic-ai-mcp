@@ -7,10 +7,11 @@
     "build": "tsc",
     "start": "node ./dist/index.js",
     "start:model": "tsx src/index.ts",
-    "start:mcpServer": "tsx ./src/mcp-server/server.ts",
-    "start:mcpToolsClient": "tsx ./src/mcp-client/tools/agent.ts",
-    "start:mcpResourcesClient": "tsx ./src/mcp-client/resources/agent.ts",
-    "start:mcpStructuredOutputClient": "tsx ./src/mcp-client/structured-output/agent.ts"
+    "start:mcpServer": "tsx ./src/stdio/mcp-server/server.ts",
+    "start:mcpToolsClient": "tsx ./src/stdio/mcp-client/tools/agent.ts",
+    "start:mcpResourcesClient": "tsx ./src/stdio/mcp-client/resources/agent.ts",
+    "start:mcpStructuredOutputClient": "tsx ./src/stdio/mcp-client/structured-output/agent.ts",
+    "start:mcpElicitationClient": "tsx ./src/stdio/mcp-client/elicitation/agent.ts"
   },
   "repository": {
     "type": "git",

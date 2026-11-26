@@ -1,4 +1,4 @@
-import { createLLMAgent } from "../../index.js";
+import { createLLMAgent } from "../../../index.js";
 import {
   closeMCPConnection,
   getIncidentResource,

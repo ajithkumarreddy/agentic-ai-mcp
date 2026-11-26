@@ -1,5 +1,6 @@
-import { createLLMAgent } from "../../index.js";
-import { closeMcpConnections, getMcpTools } from "./client.js";
+
+import { createLLMAgent } from "../../../index.js";
+import { getMcpTools, closeMcpConnections } from "./client.js";
 
 async function main() {
   try {
@@ -14,23 +15,26 @@ async function main() {
       });
     }
 
-    // agent
+    // Agent
     const agent = createLLMAgent(tools, undefined, {
-      systemPrompt: `
-        You are an service health check agent
+      systemPrompt: `You are an incidnet management assistant.
 
-        where you have access to mcp tools to get service health for a given service 
+      You have access to MCP tools for retrieving incident information.
 
-        Return the response format as same as mcp tools structured content
-        `,
+      When the user asks about an incident, use the appropriate MCP tools.
+
+      Never invent incident information. 
+      Explain the result in simple language`,
     });
 
     // Invoke Agent
     const result = await agent.invoke({
-      messages: {
-        role: "user",
-        content: "Check service health of payment-k8s API",
-      },
+      messages: [
+        {
+          role: "user",
+          content: "Get incident INC-101 and explain it.",
+        },
+      ],
     });
 
     const message = result.messages.at(-1);
