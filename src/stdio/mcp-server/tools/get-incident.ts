@@ -1,5 +1,5 @@
 import { z } from "zod";
-import incidents from "../mock-resources/store.js";
+import incidents from "../../../data/incidents.js";
 
 const getIncidentTool = {
   name: "get_incident",

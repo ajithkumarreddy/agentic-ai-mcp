@@ -1,5 +1,5 @@
 import { ResourceTemplate, type Variables } from "@modelcontextprotocol/server";
-import incidents from "../mock-resources/store.js";
+import incidents from "../../../data/incidents.js";
 
 const incidentDetails = {
   name: "incident-details",

@@ -1,17 +1,17 @@
 {
   "name": "agentic-ai-mcp",
   "version": "1.0.0",
-  "description": "",
+  "description": "Agentic AI MCP",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/index.js",
-    "start:model": "tsx src/index.ts",
-    "start:mcpServer": "tsx ./src/stdio/mcp-server/server.ts",
-    "start:mcpToolsClient": "tsx ./src/stdio/mcp-client/tools/agent.ts",
-    "start:mcpResourcesClient": "tsx ./src/stdio/mcp-client/resources/agent.ts",
-    "start:mcpStructuredOutputClient": "tsx ./src/stdio/mcp-client/structured-output/agent.ts",
-    "start:mcpElicitationClient": "tsx ./src/stdio/mcp-client/elicitation/agent.ts"
+    "dev": "tsx ./src/index.ts",
+    "dev:mcp-server": "tsx ./src/stdio/mcp-server/server.stdio.ts",
+    "dev:mcp-tools-client": "tsx ./src/stdio/mcp-client/tools/agent.ts",
+    "dev:mcp-resources-client": "tsx ./src/stdio/mcp-client/resources/agent.ts",
+    "dev:mcp-structured-output-client": "tsx ./src/stdio/mcp-client/structured-output/agent.ts",
+    "dev:mcp-elicitation-client": "tsx ./src/stdio/mcp-client/elicitation/agent.ts"
   },
   "repository": {
     "type": "git",
