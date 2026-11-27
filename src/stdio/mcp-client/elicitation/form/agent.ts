@@ -3,8 +3,8 @@ import {
   createMCPElicitationResume,
   type MCPElicitationInterrupt,
 } from "@langchain/mcp-adapters";
-import { createLLMAgent } from "../../../index.js";
-import { closeMcpConnections, getMcpTools } from "./client.js";
+import { createLLMAgent } from "../../../../index.js";
+import { closeMcpConnections, getMcpTools } from "../form/client.js";
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
 

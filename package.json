@@ -11,7 +11,7 @@
     "dev:mcp-tools-client": "tsx ./src/stdio/mcp-client/tools/agent.ts",
     "dev:mcp-resources-client": "tsx ./src/stdio/mcp-client/resources/agent.ts",
     "dev:mcp-structured-output-client": "tsx ./src/stdio/mcp-client/structured-output/agent.ts",
-    "dev:mcp-elicitation-client": "tsx ./src/stdio/mcp-client/elicitation/agent.ts"
+    "dev:mcp-elicitation-form-client": "tsx ./src/stdio/mcp-client/elicitation/form/agent.ts"
   },
   "repository": {
     "type": "git",
