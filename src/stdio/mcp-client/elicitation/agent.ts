@@ -1,41 +1,18 @@
 import { Command, MemorySaver } from "@langchain/langgraph";
-import { createMCPElicitationResume } from "@langchain/mcp-adapters";
+import {
+  createMCPElicitationResume,
+  type MCPElicitationInterrupt,
+} from "@langchain/mcp-adapters";
 import { createLLMAgent } from "../../../index.js";
 import { closeMcpConnections, getMcpTools } from "./client.js";
 import { createInterface } from "node:readline/promises";
 import { stdin, stdout } from "node:process";
 
-type UnknownRecord = Record<string, unknown>;
-
-function isRecord(value: unknown): value is UnknownRecord {
-  return typeof value === "object" && value !== null;
-}
-
-function getTextContent(content: unknown): string {
-  if (typeof content === "string") {
-    return content;
-  }
-
-  if (!Array.isArray(content)) {
-    return "";
-  }
-
-  return content
-    .filter(
-      (block): block is { type: "text"; text: string } =>
-        isRecord(block) &&
-        block.type === "text" &&
-        typeof block.text === "string",
-    )
-    .map((block) => block.text)
-    .join("");
-}
-
 async function main() {
   const rl = createInterface({ input: stdin, output: stdout });
 
   try {
-    // MCP Tools
+    // Get MCP tools
     const tools = await getMcpTools();
 
     console.log("\nMCP Tools discovered:", tools.length);
@@ -52,14 +29,14 @@ async function main() {
 
     // Create Agent
     const agent = createLLMAgent(tools, undefined, {
-      systemPrompt: `
+     systemPrompt: `
         You are a service restart agent.
 
-        You have access to MCP tools to restart services.
-        If the user requests a service restart, use the relevant MCP tool.
-
-        Never invent incident information.
-        Explain the result in simple language.
+        RULES:
+        - When the user asks to restart a service, ALWAYS call incidents_restart_service.
+        - Let the MCP tool handle all required information through elicitation.
+        - Never simulate a restart yourself.
+        - Explain the tool result in simple language.
       `,
       checkpointer,
     });
@@ -71,7 +48,7 @@ async function main() {
       },
     };
 
-    // Invoke Agent
+    // Initial Agent call
     let result = await agent.invoke(
       {
         messages: [
@@ -84,7 +61,7 @@ async function main() {
       threadConfig,
     );
 
-    // MCP Elicitation Handling
+    // Handle MCP Elicitation (MRTR)
     while (result.__interrupt__?.length) {
       const interrupt = result.__interrupt__[0];
 
@@ -92,53 +69,79 @@ async function main() {
         throw new Error("Interrupt not found");
       }
 
-      const value: unknown = interrupt.value;
+      const value = interrupt.value as MCPElicitationInterrupt;
 
-      if (
-        !isRecord(value) ||
-        value.type !== "mcp_elicitation" ||
-        !isRecord(value.requests)
-      ) {
+      if (value.type !== "mcp_elicitation") {
         throw new Error("Invalid MCP elicitation interrupt");
       }
 
-      console.log("\nInterrupt value:", JSON.stringify(value, null, 2));
+      console.log("\nElicitation request:", value);
 
-      const requests = value.requests;
-      const [requestKey, request] = Object.entries(requests)[0] ?? [];
+      // Get the first elicitation request
+      const entry = Object.entries(value.requests)[0];
 
-      if (!requestKey || !isRecord(request)) {
-        throw new Error("No elicitation request found");
+      if (!entry) {
+        throw new Error("Elicitation request not found");
       }
 
-      const requestMessage =
-        typeof request.message === "string"
-          ? request.message
-          : "Additional information required";
+      const [requestKey, request] = entry;
 
-      const serviceName = (
-        await rl.question(`\n${requestMessage}\nEnter service name: `)
-      ).trim();
+      console.log("\nServer message:", request.message);
 
-      if (!serviceName) {
-        throw new Error("Service name cannot be empty");
+      let content;
+
+      // Round 1: Ask for service name
+      if (requestKey === "service") {
+        const serviceName = (
+          await rl.question("\nEnter service name: ")
+        ).trim();
+
+        if (!serviceName) {
+          throw new Error("Service name cannot be empty");
+        }
+
+        content = {
+          serviceName,
+        };
       }
 
-      // Resume MCP Elicitation
+      // Round 2: Ask for confirmation
+      else if (requestKey === "confirm") {
+        const answer = (await rl.question("\nConfirm restart? (y/n): "))
+          .trim()
+          .toLowerCase();
+
+        content = {
+          confirm: answer === "y" || answer === "yes",
+        };
+      } else {
+        throw new Error(`Unknown request: ${requestKey}`);
+      }
+
+      // Resume the original Agent operation
       const resume = createMCPElicitationResume(interrupt, {
         [requestKey]: {
           action: "accept",
-          content: { serviceName },
+          content,
         },
       });
 
       result = await agent.invoke(new Command({ resume }), threadConfig);
     }
 
-    // Extract Final Response
-    const message = result.messages.at(-1);
+    // Extract final response
+    const lastMessage = result.messages.at(-1);
 
-    const response = getTextContent(message?.content);
+    let response = "";
+
+    if (typeof lastMessage?.content === "string") {
+      response = lastMessage.content;
+    } else if (Array.isArray(lastMessage?.content)) {
+      response = lastMessage.content
+        .filter((block) => block.type === "text")
+        .map((block) => block.text)
+        .join("");
+    }
 
     console.log("\nAgent response:\n", response);
   } finally {

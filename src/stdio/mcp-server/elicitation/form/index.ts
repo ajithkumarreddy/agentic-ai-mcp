@@ -1,5 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/server";
-import restartService from "./restart-service.js";
+import restartService from "../form/restart-service.js";
 
 const registerElicitationTools = (server: McpServer) => {
   server.registerTool(
